@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>IPTV Chile Digital</title>
+  <style>
+    :root {
+      --bg: #070a13;
+      --bg-2: #0d1224;
+      --card: rgba(255,255,255,0.08);
+      --card-2: rgba(255,255,255,0.12);
+      --text: #ffffff;
+      --muted: #b9c0d4;
+      --primary: #8b5cf6;
+      --primary-2: #06b6d4;
+      --accent: #22c55e;
+      --danger: #ef4444;
+      --border: rgba(255,255,255,0.16);
+      --shadow: 0 20px 50px rgba(0,0,0,0.35);
+      --radius: 22px;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background:
+        radial-gradient(circle at top left, rgba(139,92,246,.35), transparent 35%),
+        radial-gradient(circle at top right, rgba(6,182,212,.25), transparent 32%),
+        linear-gradient(180deg, var(--bg), var(--bg-2));
+      color: var(--text);
+    }
+
+    /* ================================
+       ZONA FÁCIL PARA EDITAR LINKS
+       Cambia los href="#" por tus links reales.
+       Ejemplo WhatsApp: https://wa.me/569XXXXXXXX?text=Hola%20quiero%20contratar
+       ================================ */
+
+    a { color: inherit; text-decoration: none; }
+    .container { width: min(1120px, 92%); margin: 0 auto; }
+
+    .topbar {
+      background: linear-gradient(90deg, var(--primary), var(--primary-2));
+      text-align: center;
+      padding: 10px 16px;
+      font-weight: 700;
+      font-size: 14px;
+    }
+
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      backdrop-filter: blur(16px);
+      background: rgba(7,10,19,.72);
+      border-bottom: 1px solid var(--border);
+    }
+
+    nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      min-height: 72px;
+      gap: 20px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-weight: 900;
+      letter-spacing: -.4px;
+    }
+
+    .logo {
+      width: 42px;
+      height: 42px;
+      border-radius: 14px;
+      display: grid;
+      place-items: center;
+      background: linear-gradient(135deg, var(--primary), var(--primary-2));
+      box-shadow: 0 10px 30px rgba(139,92,246,.35);
+      font-size: 20px;
+    }
+
+    .nav-links { display: flex; gap: 18px; align-items: center; color: var(--muted); font-size: 14px; }
+    .nav-links a:hover { color: var(--text); }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 13px 18px;
+      border-radius: 999px;
+      font-weight: 800;
+      border: 1px solid transparent;
+      cursor: pointer;
+      transition: transform .2s ease, box-shadow .2s ease, border .2s ease;
+    }
+    .btn:hover { transform: translateY(-2px); box-shadow: var(--shadow); }
+    .btn-primary { background: linear-gradient(135deg, var(--primary), var(--primary-2)); color: white; }
+    .btn-outline { border-color: var(--border); background: rgba(255,255,255,.06); color: white; }
+    .btn-whatsapp { background: linear-gradient(135deg, #16a34a, #22c55e); color: white; }
+
+    .hero {
+      padding: 88px 0 54px;
+      display: grid;
+      grid-template-columns: 1.1fr .9fr;
+      gap: 44px;
+      align-items: center;
+    }
+
+    .badge {
+      display: inline-flex;
+      padding: 9px 13px;
+      border-radius: 999px;
+      background: rgba(34,197,94,.13);
+      color: #bbf7d0;
+      border: 1px solid rgba(34,197,94,.25);
+      font-weight: 700;
+      font-size: 13px;
+      margin-bottom: 18px;
+    }
+
+    h1 {
+      font-size: clamp(42px, 6vw, 76px);
+      line-height: .95;
+      margin: 0 0 20px;
+      letter-spacing: -2px;
+    }
+
+    .gradient-text {
+      background: linear-gradient(135deg, #fff, #a5f3fc 45%, #c4b5fd);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .lead {
+      color: var(--muted);
+      font-size: 19px;
+      line-height: 1.7;
+      margin: 0 0 26px;
+      max-width: 650px;
+    }
+
+    .hero-actions { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 26px; }
+    .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; max-width: 680px; }
+    .stat { background: var(--card); border: 1px solid var(--border); border-radius: 18px; padding: 16px; }
+    .stat strong { display: block; font-size: 24px; }
+    .stat span { color: var(--muted); font-size: 13px; }
+
+    .hero-card {
+      background: linear-gradient(180deg, rgba(255,255,255,.14), rgba(255,255,255,.06));
+      border: 1px solid var(--border);
+      border-radius: 32px;
+      padding: 26px;
+      box-shadow: var(--shadow);
+      position: relative;
+      overflow: hidden;
+    }
+    .hero-card::before {
+      content: "";
+      position: absolute;
+      width: 220px;
+      height: 220px;
+      border-radius: 50%;
+      background: rgba(6,182,212,.24);
+      top: -70px;
+      right: -70px;
+      filter: blur(10px);
+    }
+    .screen {
+      position: relative;
+      border-radius: 24px;
+      background:
+        linear-gradient(rgba(0,0,0,.18), rgba(0,0,0,.55)),
+        linear-gradient(135deg, #312e81, #0f172a 45%, #155e75);
+      min-height: 360px;
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      overflow: hidden;
+    }
+    .screen-grid {
+      position: absolute;
+      inset: 20px;
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+      opacity: .65;
+    }
+    .tile { border-radius: 18px; background: rgba(255,255,255,.12); border: 1px solid rgba(255,255,255,.12); }
+    .screen-content { position: relative; z-index: 2; }
+    .price { font-size: 42px; font-weight: 900; margin: 4px 0; }
+    .price small { font-size: 16px; color: var(--muted); }
+
+    section { padding: 74px 0; }
+    .section-head { text-align: center; max-width: 760px; margin: 0 auto 38px; }
+    .section-head h2 { font-size: clamp(30px, 4vw, 48px); margin: 0 0 12px; letter-spacing: -1px; }
+    .section-head p { color: var(--muted); line-height: 1.7; margin: 0; }
+
+    .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; }
+    .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+    .feature, .plan, .faq-item, .guide-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 22px;
+      box-shadow: 0 16px 34px rgba(0,0,0,.18);
+    }
+    .icon { font-size: 28px; margin-bottom: 14px; }
+    .feature h3, .guide-card h3 { margin: 0 0 10px; }
+    .feature p, .guide-card p { color: var(--muted); line-height: 1.65; margin: 0; }
+
+    .plans { display: grid; grid-template-columns: repeat(5, 1fr); gap: 16px; }
+    .plan { position: relative; padding: 22px; display: flex; flex-direction: column; gap: 14px; }
+    .plan.featured { border-color: rgba(139,92,246,.75); background: linear-gradient(180deg, rgba(139,92,246,.22), rgba(255,255,255,.07)); transform: translateY(-8px); }
+    .ribbon { position: absolute; top: 14px; right: 14px; background: var(--accent); color: #052e16; font-weight: 900; font-size: 11px; padding: 6px 9px; border-radius: 999px; }
+    .plan h3 { margin: 0; font-size: 20px; }
+    .devices { color: #a5f3fc; font-weight: 900; font-size: 12px; letter-spacing: .5px; }
+    .plan-price { font-size: 29px; font-weight: 900; }
+    .plan-price small { font-size: 13px; color: var(--muted); }
+    .plan ul { list-style: none; padding: 0; margin: 0; display: grid; gap: 10px; color: var(--muted); font-size: 14px; }
+    .plan li::before { content: "✓"; color: var(--accent); font-weight: 900; margin-right: 8px; }
+    .plan .btn { margin-top: auto; width: 100%; }
+
+    .steps { counter-reset: step; display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+    .step { background: var(--card-2); border: 1px solid var(--border); border-radius: var(--radius); padding: 24px; }
+    .step::before {
+      counter-increment: step;
+      content: counter(step);
+      width: 42px;
+      height: 42px;
+      border-radius: 14px;
+      display: grid;
+      place-items: center;
+      background: linear-gradient(135deg, var(--primary), var(--primary-2));
+      font-weight: 900;
+      margin-bottom: 14px;
+    }
+    .step p { color: var(--muted); line-height: 1.65; }
+
+    .faq { max-width: 900px; margin: 0 auto; display: grid; gap: 14px; }
+    details summary { cursor: pointer; font-weight: 800; }
+    details p { color: var(--muted); line-height: 1.65; margin-bottom: 0; }
+
+    .cta {
+      text-align: center;
+      background: linear-gradient(135deg, rgba(139,92,246,.28), rgba(6,182,212,.22));
+      border: 1px solid var(--border);
+      border-radius: 32px;
+      padding: 44px 24px;
+      box-shadow: var(--shadow);
+    }
+    .cta h2 { font-size: clamp(30px, 4vw, 48px); margin: 0 0 12px; }
+    .cta p { color: var(--muted); margin: 0 auto 24px; max-width: 720px; line-height: 1.7; }
+
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 34px 0;
+      color: var(--muted);
+      font-size: 14px;
+    }
+    .footer-row { display: flex; justify-content: space-between; gap: 18px; flex-wrap: wrap; }
+    .footer-links { display: flex; gap: 16px; flex-wrap: wrap; }
+    .footer-links a:hover { color: white; }
+
+    @media (max-width: 1050px) {
+      .plans { grid-template-columns: repeat(2, 1fr); }
+      .grid-4 { grid-template-columns: repeat(2, 1fr); }
+      .hero { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 720px) {
+      .nav-links { display: none; }
+      .hero { padding-top: 54px; }
+      .stats, .steps, .grid-3, .grid-4, .plans { grid-template-columns: 1fr; }
+      .plan.featured { transform: none; }
+      h1 { letter-spacing: -1px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- MENÚ / HIPERVÍNCULOS PRINCIPALES -->
+  <header>
+    <div class="container">
+      <nav>
+        <a href="#inicio" class="brand">
+          <span class="logo">▶</span>
+          <span>IPTV Chile Digital</span>
+        </a>
+        <div class="nav-links">
+          <a href="#inicio">Inicio</a>
+          <a href="#planes">Planes</a>
+          <a href="#guias">Guías</a>
+          <a href="#faq">Preguntas</a>
+          <a href="#contacto">Contacto</a>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <main id="inicio" class="container">
+    <!-- PORTADA -->
+    <section class="hero">
+      <div>
+        <span class="badge">Activación rápida · Soporte por WhatsApp · 3 dispositivos</span>
+        <h1>Disfruta tu contenido favorito con <span class="gradient-text">IPTV Chile Digital</span></h1>
+        <p class="lead">Planes flexibles para ver canales, películas y series desde Smart TV, TV Box, celular, tablet o computador. Compra simple, soporte directo y guía de instalación.</p>
+        <div class="hero-actions">
+          <a class="btn btn-whatsapp" href="https://wa.me/56979768526?text=Hola%2C%20quiero%20pedir%20una%20demostraci%C3%B3n%20de%20IPTV" target="_blank">Pedir demostración</a>
+          <a class="btn btn-primary" href="#planes">Ver planes</a>
+        </div>
+        <div class="stats">
+          <div class="stat"><strong>+2.500</strong><span>canales disponibles</span></div>
+          <div class="stat"><strong>+8.000</strong><span>películas y contenido</span></div>
+          <div class="stat"><strong>24/7</strong><span>soporte y asistencia</span></div>
+        </div>
+      </div>
+      <div class="hero-card">
+        <div class="screen">
+          <div class="screen-grid">
+            <div class="tile"></div><div class="tile"></div><div class="tile"></div><div class="tile"></div>
+          </div>
+          <div class="screen-content">
+            <p class="devices">PLAN DESDE</p>
+            <div class="price">$5.990 <small>CLP / mensual</small></div>
+            <p class="lead" style="font-size:15px;margin-bottom:0">Compatible con Android, iOS, Smart TV, Windows, Mac y TV Box.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- BENEFICIOS -->
+  <section>
+    <div class="container">
+      <div class="section-head">
+        <h2>¿Por qué escoger nuestro servicio?</h2>
+        <p>Una experiencia pensada para que el cliente pueda activar, instalar y disfrutar sin complicaciones.</p>
+      </div>
+      <div class="grid-4">
+        <div class="feature"><div class="icon">⚡</div><h3>Activación rápida</h3><p>Recibe tus datos y comienza a utilizar el servicio en poco tiempo después de confirmar tu compra.</p></div>
+        <div class="feature"><div class="icon">📺</div><h3>Multidispositivo</h3><p>Funciona en Smart TV, TV Box, celular, tablet y computador mediante aplicaciones compatibles.</p></div>
+        <div class="feature"><div class="icon">🛟</div><h3>Soporte directo</h3><p>Asistencia por WhatsApp para instalación, configuración y dudas generales del servicio.</p></div>
+        <div class="feature"><div class="icon">🎬</div><h3>Contenido variado</h3><p>Canales, películas, series y programación para distintos gustos en un solo lugar.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PLANES -->
+  <section id="planes">
+    <div class="container">
+      <div class="section-head">
+        <h2>Planes disponibles</h2>
+        <p>Elige la duración que más te convenga. Todos los planes incluyen 3 dispositivos simultáneos.</p>
+      </div>
+      <div class="plans">
+        <article class="plan">
+          <h3>Plan mensual</h3>
+          <div class="devices">3 DISPOSITIVOS</div>
+          <div class="plan-price">$5.990 <small>/ mensual</small></div>
+          <ul><li>Activación rápida</li><li>+2.500 canales</li><li>+8.000 películas</li><li>Guía programática</li><li>Aplicación compatible</li></ul>
+          <a class="btn btn-primary" href="https://wa.me/56979768526?text=Hola%2C%20quiero%20contratar%20el%20plan%20mensual%20de%20IPTV" target="_blank">Contratar plan</a>
+        </article>
+        <article class="plan featured">
+          <span class="ribbon">DESTACADO</span>
+          <h3>Plan 3 meses</h3>
+          <div class="devices">3 DISPOSITIVOS</div>
+          <div class="plan-price">$11.990 <small>/ 3 meses</small></div>
+          <ul><li>Activación rápida</li><li>+2.500 canales</li><li>+8.000 películas</li><li>Guía programática</li><li>Aplicación compatible</li></ul>
+          <a class="btn btn-primary" href="https://wa.me/56979768526?text=Hola%2C%20quiero%20contratar%20el%20plan%20de%203%20meses%20de%20IPTV" target="_blank">Contratar plan</a>
+        </article>
+        <article class="plan">
+          <h3>Plan 6 meses</h3>
+          <div class="devices">3 DISPOSITIVOS</div>
+          <div class="plan-price">$22.990 <small>/ 6 meses</small></div>
+          <ul><li>Activación rápida</li><li>+2.500 canales</li><li>+8.000 películas</li><li>Guía programática</li><li>Aplicación compatible</li></ul>
+          <a class="btn btn-primary" href="https://wa.me/56979768526?text=Hola%2C%20quiero%20contratar%20el%20plan%20de%206%20meses%20de%20IPTV" target="_blank">Contratar plan</a>
+        </article>
+        <article class="plan">
+          <h3>Plan 1 año</h3>
+          <div class="devices">3 DISPOSITIVOS</div>
+          <div class="plan-price">$42.990 <small>/ 1 año</small></div>
+          <ul><li>Activación rápida</li><li>+2.500 canales</li><li>+8.000 películas</li><li>Guía programática</li><li>Aplicación compatible</li></ul>
+          <a class="btn btn-primary" href="https://wa.me/56979768526?text=Hola%2C%20quiero%20contratar%20el%20plan%20de%201%20a%C3%B1o%20de%20IPTV" target="_blank">Contratar plan</a>
+        </article>
+        <article class="plan">
+          <h3>Plan 2 años</h3>
+          <div class="devices">3 DISPOSITIVOS</div>
+          <div class="plan-price">$63.990 <small>/ 2 años</small></div>
+          <ul><li>Activación rápida</li><li>+2.500 canales</li><li>+8.000 películas</li><li>Guía programática</li><li>Aplicación compatible</li></ul>
+          <a class="btn btn-primary" href="https://wa.me/56979768526?text=Hola%2C%20quiero%20contratar%20el%20plan%20de%202%20a%C3%B1os%20de%20IPTV" target="_blank">Contratar plan</a>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- GUÍAS -->
+  <section id="guias">
+    <div class="container">
+      <div class="section-head">
+        <h2>Guía rápida de instalación</h2>
+        <p>Sección editable para poner tus aplicaciones, códigos o links de descarga.</p>
+      </div>
+      <div class="grid-3">
+        <div class="guide-card">
+          <h3>iOS — Smarters Player Lite</h3>
+          <p>Descarga la app desde App Store e ingresa los datos enviados después de contratar.</p>
+          <br><a class="btn btn-outline" href="https://apps.apple.com/es/app/smarters-player-lite/id1628995509" target="_blank">Abrir App Store</a>
+        </div>
+        <div class="guide-card">
+          <h3>Android — Streaming Chile IPTV Player</h3>
+          <p>Instala la app Android e inicia sesión con usuario, contraseña o código de activación según corresponda.</p>
+          <br><a class="btn btn-outline" href="https://android.dctv.pro/app.apk" target="_blank">Descargar APK</a>
+        </div>
+        <div class="guide-card">
+          <h3>Downloader Android</h3>
+          <p>Opción alternativa para Android TV o TV Box. Código Downloader: <strong>5179338</strong></p>
+          <br><a class="btn btn-outline" href="#contacto">Pedir ayuda</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PASOS -->
+  <section>
+    <div class="container">
+      <div class="section-head">
+        <h2>Cómo funciona</h2>
+        <p>Proceso simple para que el cliente entienda rápidamente qué debe hacer.</p>
+      </div>
+      <div class="steps">
+        <div class="step"><h3>Elige tu plan</h3><p>Selecciona mensual, 3 meses, 6 meses, 1 año o 2 años según lo que necesites.</p></div>
+        <div class="step"><h3>Escríbenos</h3><p>Presiona el botón de WhatsApp para solicitar compra, demo o ayuda con la instalación.</p></div>
+        <div class="step"><h3>Activa y disfruta</h3><p>Recibe tus datos, instala la aplicación compatible y comienza a ver tu contenido.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section id="faq">
+    <div class="container">
+      <div class="section-head">
+        <h2>Preguntas frecuentes</h2>
+        <p>Modifica estas respuestas según tus condiciones reales de venta y soporte.</p>
+      </div>
+      <div class="faq">
+        <details class="faq-item"><summary>¿Cuánto demora la activación?</summary><p>La activación se realiza después de confirmar la compra y enviar los datos necesarios al cliente.</p></details>
+        <details class="faq-item"><summary>¿Puedo usarlo en TV Box?</summary><p>Sí, puedes utilizar aplicaciones compatibles en TV Box, Android TV y otros dispositivos similares.</p></details>
+        <details class="faq-item"><summary>¿Cuántos dispositivos incluye?</summary><p>Los planes publicados incluyen 3 dispositivos simultáneos.</p></details>
+        <details class="faq-item"><summary>¿Qué velocidad de internet necesito?</summary><p>Se recomienda una conexión estable. Para contenido HD, idealmente desde 8 Mbps o superior.</p></details>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACTO -->
+  <section id="contacto">
+    <div class="container">
+      <div class="cta">
+        <h2>¿Listo para comenzar?</h2>
+        <p>Solicita tu demostración, contrata un plan o pide ayuda para instalar la aplicación en tu dispositivo.</p>
+        <div class="hero-actions" style="justify-content:center;margin-bottom:0">
+          <a class="btn btn-whatsapp" href="https://wa.me/56979768526?text=Hola%2C%20quiero%20informaci%C3%B3n%20sobre%20los%20planes%20IPTV" target="_blank">Hablar por WhatsApp</a>
+          <a class="btn btn-outline" href="#planes">Escoger plan</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="container footer-row">
+      <div>© 2026 Okurrr IPTV Chile. Todos los derechos reservados.</div>
+      <div class="footer-links">
+        <a href="#planes">Planes</a>
+        <a href="#guias">Guías</a>
+        <a href="#faq">FAQ</a>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>
